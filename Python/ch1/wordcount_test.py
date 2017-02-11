@@ -2,6 +2,7 @@ import unittest
 from pyspark import SparkContext, SparkConf
 from wordcount import WordCount
 
+# 1.4.1절
 class WordCountTest(unittest.TestCase):
 
     def testWordCount(self):

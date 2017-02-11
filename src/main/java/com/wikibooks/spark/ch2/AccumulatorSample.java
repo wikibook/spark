@@ -12,6 +12,7 @@ import java.util.List;
 
 public class AccumulatorSample {
 
+  // ex 2-141
   public static void runBuitInAcc(JavaSparkContext jsc) {
     LongAccumulator acc1 = jsc.sc().longAccumulator("invalidFormat");
     CollectionAccumulator acc2 = jsc.sc().collectionAccumulator("invalidFormat2");
@@ -29,6 +30,7 @@ public class AccumulatorSample {
     System.out.println("잘못된 데이터:" + acc2.value());
   }
 
+  // ex 2-144
   public static void runCustomAcc(JavaSparkContext jsc) {
     RecordAccumulator acc = new RecordAccumulator();
     jsc.sc().register(acc, "invalidFormat");

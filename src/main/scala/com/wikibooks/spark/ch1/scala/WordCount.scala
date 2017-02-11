@@ -3,6 +3,7 @@ package com.wikibooks.spark.ch1.scala
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 
+// 1.4.1절
 object WordCount {
 
   def main(args: Array[String]): Unit = {

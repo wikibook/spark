@@ -13,6 +13,7 @@ import scala.Tuple2;
 import java.util.Arrays;
 import java.util.Iterator;
 
+// 1.4.1절
 public class WordCount {
 
   public static void main(String[] args) {

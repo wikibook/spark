@@ -16,10 +16,11 @@ public class RDDCreateSample {
 
     JavaSparkContext sc = new JavaSparkContext(conf);
 
+    // 2.1.3절 예제 2-6
     JavaRDD<String> rdd1 = sc.parallelize(Arrays.asList("a", "b", "c", "d", "e"));
 
-    // <project_home>은 예제 프로젝트의 경로
-    JavaRDD<String> rdd2 = sc.textFile("file://<project_home>/source/data/sample.txt");
+    // 2.1.3절 예제 2-8
+    JavaRDD<String> rdd2 = sc.textFile("<spark_home_dir>/README.md");
 
     for (String v : rdd1.collect()) {
       System.out.println(v);

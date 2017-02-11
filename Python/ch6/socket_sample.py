@@ -1,3 +1,5 @@
+# 6.2.1절 예제 6-6
+
 from pyspark import SparkContext, SparkConf
 from pyspark.streaming.context import StreamingContext
 

@@ -1,10 +1,11 @@
 package com.wikibooks.spark.ch6.scala
 
-import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
+import org.apache.spark.{SparkConf, SparkContext}
 
 import scala.collection.mutable.Queue
 
+// 6.1.1절 예제 6-1
 object StreamingSample {
 
   def main(args: Array[String]) {

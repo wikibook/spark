@@ -1,9 +1,9 @@
 package com.wikibooks.spark.ch3.scala
 
-import org.apache.spark.SparkContext
-import org.apache.spark.SparkConf
+import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.rdd.RDD.rddToPairRDDFunctions
 
+// 3.2.1.5.3절
 object WordCount {
 
   def run(inputPath: String, outputPath: String) {
@@ -14,8 +14,8 @@ object WordCount {
       .flatMap(_.split(" "))
       .map((_, 1L))
       .reduceByKey(_ + _)
-      .saveAsTextFile(outputPath)  
-      
+      .saveAsTextFile(outputPath)
+
     sc.stop()
   }
 

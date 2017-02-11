@@ -1,3 +1,4 @@
+# 6.2.4절 예제 6-12
 from pyspark import SparkContext, SparkConf, storagelevel
 from pyspark.streaming.context import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils

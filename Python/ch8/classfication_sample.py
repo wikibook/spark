@@ -1,14 +1,10 @@
-from pyspark.ml.evaluation import RegressionEvaluator
+from pyspark.ml.classification import DecisionTreeClassifier
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
 from pyspark.ml.feature import StringIndexer
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.pipeline import Pipeline
-from pyspark.ml.regression import LinearRegression
 from pyspark.sql import SparkSession
 from pyspark.sql import functions
-from pyspark.ml.clustering import KMeans
-from pyspark.sql import functions
-from pyspark.ml.classification import DecisionTreeClassifier
-from pyspark.ml.evaluation import BinaryClassificationEvaluator
 
 spark = SparkSession \
     .builder \

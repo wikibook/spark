@@ -5,6 +5,7 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 import scala.collection.mutable
 
+// 6.2.3절
 object QueueSample {
 
   def main(args: Array[String]): Unit = {

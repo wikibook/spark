@@ -1,17 +1,16 @@
 package com.wikibooks.spark.ch2.scala
 
-import org.apache.spark.SparkContext
-import org.apache.spark.SparkConf
+import org.apache.spark.{SparkConf, SparkContext}
 
 class PassingFunctionSample {
 
-  var increment = 1
+  // 예제 2-1
+  var count = 1
 
-  def add(i: Int): Int = {
-    i + 1
+  def add1(i: Int): Int = {
+    count + 1
   }
 
-  // PassingFunctionSample 전체가 전달되는 잘못된 예
   def runMapSample(sc: SparkContext) {
     val rdd1 = sc.parallelize(1 to 10)
     // java.io.NotSerializableException !!!!
@@ -19,21 +18,26 @@ class PassingFunctionSample {
     println(rdd2.collect())
   }
 
-  // object를 이용하여 제대로 구현한 경우 
+  // 예제 2-2
+  var increment = 1
+
+  def add(i: Int): Int = {
+    i + 1
+  }
+
   def runMapSample2(sc: SparkContext) {
     val rdd1 = sc.parallelize(1 to 10)
     val rdd2 = rdd1.map(Operations.add)
     print(rdd2.collect().toList)
   }
 
-  // 인스턴스 변수를 잘못 전달하는 예 
+  // 예제 2-5
   def runMapSample3(sc: SparkContext) {
     val rdd1 = sc.parallelize(1 to 10)
     val rdd2 = rdd1.map(_ + increment)
     print(rdd2.collect.toList)
   }
 
-  // 인스턴스 변수를 지역 변수로 바꿔서 전달하는 예  
   def runMapSample4(sc: SparkContext) {
     val rdd1 = sc.parallelize(1 to 10)
     val localIncrement = increment

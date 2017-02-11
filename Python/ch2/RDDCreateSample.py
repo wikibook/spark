@@ -4,9 +4,12 @@ import os
 
 class RDDCreateSample:
     def run(self, sc):
+
+        # 2.1.3절 예제 2-6
         rdd1 = sc.parallelize(["a", "b", "c", "d", "e"])
-        # <project_home>은 예제 프로젝트의 경로
-        rdd2 = sc.textFile("file://<project_home>/source/data/sample.txt")
+
+        # 2.1.3절 예제 2-8
+        rdd2 = sc.textFile("<spark_home_dir>/README.md")
 
         print(rdd1.collect())
         print(rdd2.collect())

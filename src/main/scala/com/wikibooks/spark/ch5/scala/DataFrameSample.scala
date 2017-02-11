@@ -1,17 +1,78 @@
 package com.wikibooks.spark.ch5.scala
 
-import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.sql.{DataFrame, Row, SQLContext, SparkSession}
-import org.apache.spark.sql.types._
-import org.apache.spark.sql.functions._
-import scala.reflect.runtime.universe
-import org.apache.spark.sql.SaveMode
-import org.apache.spark.storage.StorageLevel
-import org.apache.spark.unsafe.types.CalendarInterval
+import org.apache.spark.SparkContext
 import org.apache.spark.sql.expressions.Window
-
+import org.apache.spark.sql.functions._
+import org.apache.spark.sql.types._
+import org.apache.spark.sql.{DataFrame, Row, SaveMode, SparkSession}
+import org.apache.spark.storage.StorageLevel
 
 object DataFrameSample {
+
+  def main(args: Array[String]) = {
+
+    val spark = SparkSession
+      .builder()
+      .appName("DataFrameSample")
+      .master("local[*]")
+      .config("spark.driver.host", "127.0.0.1")
+      .getOrCreate()
+
+    val sc = spark.sparkContext
+
+    import spark.implicits._
+
+    // sample dataframe 1
+    val row1 = Person("hayoon", 7, "student")
+    val row2 = Person("sunwoo", 13, "student")
+    val row3 = Person("hajoo", 5, "kindergartener")
+    val row4 = Person("jinwoo", 13, "student")
+    val data = List(row1, row2, row3, row4)
+    val sampleDf = spark.createDataFrame(data)
+
+    val d1 = ("store2", "note", 20, 2000)
+    val d2 = ("store2", "bag", 10, 5000)
+    val d3 = ("store1", "note", 15, 1000)
+    val d4 = ("store1", "pen", 20, 5000)
+    val sampleDF2 = Seq(d1, d2, d3, d4).toDF("store", "product", "amount", "price")
+
+    val ldf = Seq(Word("w1", 1), Word("w2", 1)).toDF
+    val rdf = Seq(Word("w1", 2), Word("w3", 1)).toDF
+
+    // [예제 실행 방법] 아래에서 원하는 예제의 주석을 제거하고 실행!!
+
+    //createDataFrame(spark, spark.sparkContext)
+    //runBasicOpsEx(spark, sc, sampleDf)
+    //runColumnEx(spark, sc, sampleDf)
+    //runAlias(spark, sc, sampleDf)
+    //runIsinEx(spark, sc)
+    //runWhenEx(spark, sc)
+    //runMaxMin(spark, sampleDf)
+    //runAggregateFunctions(spark, sampleDf, sampleDF2)
+    //runCollectionFunctions(spark)
+    //runDateFunctions(spark)
+    //runMathFunctions(spark)
+    //runOtherFunctions(spark, sampleDf)
+    //runUDF(spark, sampleDf)
+    //runRowEx(spark)
+    //runAgg(spark, sampleDF2)
+    //runDfAlias(spark, sampleDF2)
+    //runGroupBy(spark, sampleDF2)
+    //runCube(spark, sampleDF2)
+    //runDistinct(spark)
+    //runDrop(spark, sampleDF2)
+    //runIntersect(spark)
+    //runExcept(spark)
+    //runJoin(spark, ldf, rdf)
+    //runNa(spark, ldf, rdf)
+    //runOrderBy(spark)
+    //runRollup(spark, sampleDF2)
+    //runStat(spark)
+    //runWithColumn(spark)
+    //runSave(spark)
+
+    spark.stop
+  }
 
   def createDataFrame(spark: SparkSession, sc: SparkContext) {
 
@@ -105,7 +166,6 @@ object DataFrameSample {
 
   // 5.5.2.4.3절
   def runIsinEx(spark: SparkSession, sc: SparkContext) {
-    import spark.implicits._
     val nums = sc.broadcast(List(1, 3, 5, 7, 9))
     val ds = spark.range(0, 10)
     val col = ds("id").isin(nums.value: _*)
@@ -114,7 +174,6 @@ object DataFrameSample {
 
   // 5.5.2.4.4절
   def runWhenEx(spark: SparkSession, sc: SparkContext) {
-    import spark.implicits._
     val ds = spark.range(0, 5)
     val col = when(ds("id") % 2 === 0, "even").otherwise("odd").as("type")
     ds.select(ds("id"), col).show()
@@ -283,7 +342,6 @@ object DataFrameSample {
 
   // 5.5.2.4.24절
   def runAgg(spark: SparkSession, df: DataFrame) {
-    import spark.implicits._
     import org.apache.spark.sql.functions._
     df.agg(max("amount"), min("price")).show
     df.agg(Map("amount" -> "max", "price" -> "min")).show
@@ -291,23 +349,17 @@ object DataFrameSample {
 
   // 5.5.2.4.26절
   def runDfAlias(spark: SparkSession, df: DataFrame) {
-    import spark.implicits._
-    import org.apache.spark.sql.functions._
     df.select(df("product")).show
     df.alias("aa").select("aa.product").show
   }
 
   // 5.5.2.4.27절
   def runGroupBy(spark: SparkSession, df: DataFrame) {
-    import spark.implicits._
-    import org.apache.spark.sql.functions._
     df.groupBy("store", "product").agg("price" -> "sum").show
   }
 
   // 5.5.3.4.28절
   def runCube(spark: SparkSession, df: DataFrame) {
-    import spark.implicits._
-    import org.apache.spark.sql.functions._
     df.cube("store", "product").agg("price" -> "sum").show
   }
 
@@ -330,7 +382,6 @@ object DataFrameSample {
 
   // 5.5.2.4.31절
   def runIntersect(spark: SparkSession) {
-    import spark.implicits._
     val a = spark.range(1, 5).toDF
     val b = spark.range(2, 6).toDF
     val c = a.intersect(b)
@@ -347,7 +398,6 @@ object DataFrameSample {
 
   // 5.5.2.4.33절
   def runJoin(spark: SparkSession, ldf: DataFrame, rdf: DataFrame) {
-    import spark.implicits._
     val joinTypes = "inner,outer,leftouter,rightouter,leftsemi".split(",")
     joinTypes.foreach((joinType: String) => {
       println(s"============= ${joinType} ===============")
@@ -357,7 +407,6 @@ object DataFrameSample {
 
   // 5.5.2.4.35절
   def runNa(spark: SparkSession, ldf: DataFrame, rdf: DataFrame) {
-    import spark.implicits._
     val result = ldf.join(rdf, Seq("word"), "outer").toDF("word", "c1", "c2")
     result.show
     result.na.drop(2, Seq("c1", "c2")).show
@@ -375,15 +424,12 @@ object DataFrameSample {
 
   // 5.5.2.4.37절
   def runRollup(spark: SparkSession, df: DataFrame) {
-    import spark.implicits._
-    import org.apache.spark.sql.functions._
     df.rollup("store", "product").agg("price" -> "sum").show
   }
 
   // 5.5.2.4.38절
   def runStat(spark: SparkSession) {
     import spark.implicits._
-    import org.apache.spark.sql.functions._
     val df = List(("a", 6), ("b", 4), ("c", 12), ("d", 6)).toDF("word", "count")
     df.show
     df.stat.crosstab("word", "count").show
@@ -392,7 +438,6 @@ object DataFrameSample {
   // 5.5.2.4.39절
   def runWithColumn(spark: SparkSession) {
     import spark.implicits._
-    import org.apache.spark.sql.functions._
     val df1 = List(("prod1", "100"), ("prod2", "200")).toDF("pname", "price")
     val df2 = df1.withColumn("dcprice", 'price * 0.9)
     val df3 = df2.withColumnRenamed("dcprice", "newprice")
@@ -403,8 +448,6 @@ object DataFrameSample {
 
   // 5.5.2.4.40절
   def runSave(spark: SparkSession) {
-    import spark.implicits._
-    import org.apache.spark.sql.functions._
     val sparkHomeDir = "/Users/beginspark/Apps/spark"
     val df = spark.read.json(sparkHomeDir + "/examples/src/main/resources/people.json")
     df.write.save("/Users/beginspark/Temp/default/" + System.currentTimeMillis())
@@ -415,70 +458,5 @@ object DataFrameSample {
     // bucketBy의 경우 테이블로 저장해야 햠
     df.write.format("json").bucketBy(20, "age").mode(SaveMode.Overwrite).saveAsTable("ohMyBuckedTable")
     spark.sql("select * from ohMyBuckedTable").show
-  }
-
-  def main(args: Array[String]) = {
-
-    val spark = SparkSession
-      .builder()
-      .appName("DataFrameSample")
-      .master("local[*]")
-      .getOrCreate()
-
-    val sc = spark.sparkContext
-
-    import spark.implicits._
-
-    // sample dataframe 1   
-    val row1 = Person("hayoon", 7, "student")
-    val row2 = Person("sunwoo", 13, "student")
-    val row3 = Person("hajoo", 5, "kindergartener")
-    val row4 = Person("jinwoo", 13, "student")
-    val data = List(row1, row2, row3, row4)
-    val sampleDf = spark.createDataFrame(data)
-
-    val d1 = ("store2", "note", 20, 2000)
-    val d2 = ("store2", "bag", 10, 5000)
-    val d3 = ("store1", "note", 15, 1000)
-    val d4 = ("store1", "pen", 20, 5000)
-    val sampleDF2 = Seq(d1, d2, d3, d4).toDF("store", "product", "amount", "price")
-
-    val ldf = Seq(Word("w1", 1), Word("w2", 1)).toDF
-    val rdf = Seq(Word("w1", 2), Word("w3", 1)).toDF
-
-    // [예제 실행 방법] 아래에서 원하는 예제의 주석을 제거하고 실행!!
-
-    //createDataFrame(spark, spark.sparkContext)
-    //runBasicOpsEx(spark, sc, sampleDf)
-    //runColumnEx(spark, sc, sampleDf)
-    //runAlias(spark, sc, sampleDf)
-    //runIsinEx(spark, sc)
-    //runWhenEx(spark, sc)
-    //runMaxMin(spark, sampleDf)
-    //runAggregateFunctions(spark, sampleDf, sampleDF2)
-    //runCollectionFunctions(spark)
-    //runDateFunctions(spark)
-    //runMathFunctions(spark)
-    //runOtherFunctions(spark, sampleDf)
-    //runUDF(spark, sampleDf)
-    //runRowEx(spark)
-    //runAgg(spark, sampleDF2)
-    //runDfAlias(spark, sampleDF2)
-    //runGroupBy(spark, sampleDF2)
-    //runCube(spark, sampleDF2)
-    //runDistinct(spark)
-    //runDrop(spark, sampleDF2)
-    //runIntersect(spark)
-    //runExcept(spark)
-    //runJoin(spark, ldf, rdf)
-    //runNa(spark, ldf, rdf)
-    //runOrderBy(spark)
-    //runRollup(spark, sampleDF2)
-    //runStat(spark)
-    //runWithColumn(spark)
-    //runSave(spark)
-
-    spark.stop
-
   }
 }

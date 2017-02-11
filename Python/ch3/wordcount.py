@@ -1,6 +1,7 @@
 from pyspark import SparkContext, SparkConf
 import sys
 
+# 3.2.1.5.3절
 class WordCount:
     
     def run(self, inputPath, outputPath):

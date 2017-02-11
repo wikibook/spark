@@ -1,13 +1,8 @@
 package com.wikibooks.spark.ch6;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.Optional;
-import org.apache.spark.api.java.function.FlatMapFunction;
-import org.apache.spark.api.java.function.Function;
-import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaDStream;
@@ -19,6 +14,7 @@ import java.util.*;
 
 public class StreamingOps {
 
+  // [예제 실행 방법] 아래에서 원하는 예제의 주석을 제거하고 실행!!
   public static void main(String[] args) throws Exception {
 
     String checkpointDir = "./checkPoints/StreamingOps/Java";
@@ -78,42 +74,49 @@ public class StreamingOps {
     JavaDStream<Integer> ds5 = ssc.queueStream(q5, true);
 
     // 6.3.1절
-    ds1.print();
+    // ds1.print();
 
     // 6.3.2절(Java7)
+    /*
     ds1.map(new Function<String, Tuple2<String, Long>>() {
       @Override
       public Tuple2<String, Long> call(String str) throws Exception {
         return new Tuple2<String, Long>(str, 1L);
       }
     }).print();
+    */
 
     // 6.3.2절(Java8)
-    ds1.map((String str) -> new Tuple2<String, Long>(str, 1L)).print();
+    //ds1.map((String str) -> new Tuple2<String, Long>(str, 1L)).print();
 
     // 6.3.3절(Java7)
+    /*
     ds2.flatMap(new FlatMapFunction<String, String>() {
       @Override
       public Iterator<String> call(String str) throws Exception {
         return Arrays.asList(str.split(",")).iterator();
       }
     }).print();
+    */
 
     // 6.3.3절(Java8)
-    ds2.flatMap((String str) -> Arrays.asList(str.split(",")).iterator()).print();
+    // ds2.flatMap((String str) -> Arrays.asList(str.split(",")).iterator()).print();
 
     // 6.3.4절
-    ds1.count().print();
-    ds1.countByValue().print();
+    //ds1.count().print();
+    //ds1.countByValue().print();
 
     // 6.3.5절(Java7)
+    /*
     ds1.reduce(new Function2<String, String, String>() {
       @Override
       public String call(String v1, String v2) throws Exception {
         return v1 + "," + v2;
       }
     }).print();
+    */
 
+    /*
     ds1.mapToPair(new PairFunction<String, String, Long>() {
       @Override
       public Tuple2<String, Long> call(String s) throws Exception {
@@ -125,32 +128,38 @@ public class StreamingOps {
         return v1 + v2;
       }
     }).print();
+    */
 
     // 6.3.5절(Java8)
-    ds1.reduce((String v1, String v2) -> v1 + "," + v2).print();
+    //ds1.reduce((String v1, String v2) -> v1 + "," + v2).print();
 
+    /*
     ds1.mapToPair((String s) -> new Tuple2<String, Long>(s, 1L))
             .reduceByKey((Long v1, Long v2) -> v1 + v2)
             .print();
+    */
 
     // 6.3.6절(Java7)
+    /*
     ds1.filter(new Function<String, Boolean>() {
       @Override
       public Boolean call(String v1) throws Exception {
         return !StringUtils.equals(v1, "c");
       }
     }).print();
+    */
 
     // 6.3.6절(Java8)
-    ds1.filter((String v1) -> !StringUtils.equals(v1, "c")).print();
+    //ds1.filter((String v1) -> !StringUtils.equals(v1, "c")).print();
 
     // 6.3.7절
-    ds1.union(ds2).print();
+    //ds1.union(ds2).print();
 
     // 6.3.8절
-    ds3.join(ds4).print();
+    //ds3.join(ds4).print();
 
     // 6.4.1절
+    /*
     JavaRDD<Integer> otherRDD = sc.parallelize(Arrays.asList(1, 2));
     ds5.transform(new Function<JavaRDD<Integer>, JavaRDD<Integer>>() {
       @Override
@@ -158,6 +167,7 @@ public class StreamingOps {
         return myRDD.subtract(otherRDD);
       }
     }).print();
+    */
 
     // 6.4.2절
     JavaRDD<String> t1 = sc.parallelize(Arrays.asList("a", "b", "c"));
@@ -169,6 +179,7 @@ public class StreamingOps {
     ssc.checkpoint(checkpointDir);
 
     // Java7
+    /*
     ds6.mapToPair(new PairFunction<String, String, Long>() {
       @Override
       public Tuple2<String, Long> call(String s) throws Exception {
@@ -182,12 +193,15 @@ public class StreamingOps {
         return Optional.of(currentValue.orElse(0L) + sum);
       }
     }).print();
+    */
 
     // Java8
+    /*
     ds6.mapToPair((String s) -> new Tuple2<String, Long>(s, 1L))
             .updateStateByKey((List<Long> newValues, Optional<Long> currentValue) -> {
               return Optional.of(currentValue.orElse(0L) + newValues.stream().reduce(0L, Long::sum));
             }).print();
+    */
 
     // 6.4.3절
     List<JavaRDD<Long>> rdds = new ArrayList<>();
@@ -198,23 +212,26 @@ public class StreamingOps {
     JavaDStream<Long> ds7 = ssc.queueStream(new LinkedList<>(rdds));
 
     // 6.4.4절
-    ds7.window(Durations.seconds(3), Durations.seconds(2)).print();
+    //ds7.window(Durations.seconds(3), Durations.seconds(2)).print();
 
     // 6.4.5절
-    ds7.countByWindow(Durations.seconds(3), Durations.seconds(2)).print();
+    //ds7.countByWindow(Durations.seconds(3), Durations.seconds(2)).print();
 
     // 6.4.6절 (Java7)
+    /*
     ds7.reduceByWindow(new Function2<Long, Long, Long>() {
       @Override
       public Long call(Long v1, Long v2) throws Exception {
         return v1 + v2;
       }
     }, Durations.seconds(3), Durations.seconds(2)).print();
+    */
 
     // 6.4.6절 (Java8)
-    ds7.reduceByWindow((Long v1, Long v2) -> v1 + v2, Durations.seconds(3), Durations.seconds(2)).print();
+    //ds7.reduceByWindow((Long v1, Long v2) -> v1 + v2, Durations.seconds(3), Durations.seconds(2)).print();
 
     // 6.4.7절(Java7)
+    /*
     ds7.mapToPair(new PairFunction<Long, Long, Long>() {
       @Override
       public Tuple2<Long, Long> call(Long v) throws Exception {
@@ -226,13 +243,17 @@ public class StreamingOps {
         return v1 + v2;
       }
     }, Durations.seconds(4), Durations.seconds(2)).print();
+    */
 
     // 6.4.7절(Java8)
+    /*
     ds7.mapToPair((Long v) -> new Tuple2<Long, Long>(v % 2, 1L))
             .reduceByKeyAndWindow((Long v1, Long v2) -> v1 + v2,
                     Durations.seconds(4), Durations.seconds(2)).print();
+    */
 
     // 역리듀스 함수 사용
+    /*
     ds7.mapToPair(new PairFunction<Long, String, Long>() {
       @Override
       public Tuple2<String, Long> call(Long v) throws Exception {
@@ -249,12 +270,13 @@ public class StreamingOps {
         return v1 - v2;
       }
     }, Durations.seconds(3), Durations.seconds(2)).print();
+    */
 
     // 6.4.8절
-    ds7.countByValueAndWindow(Durations.seconds(3), Durations.seconds(2)).print();
+    //ds7.countByValueAndWindow(Durations.seconds(3), Durations.seconds(2)).print();
 
     // 6.5.1절
-    ds6.dstream().saveAsTextFiles("/Users/beginspark/Temp/test", "dir");
+    //ds6.dstream().saveAsTextFiles("/Users/beginspark/Temp/test", "dir");
 
     // 6.5.2절
     //runForeach(ssc)

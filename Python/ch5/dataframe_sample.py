@@ -16,6 +16,7 @@ spark = SparkSession \
     .appName("sample") \
     .master("local[*]") \
     .config("spark.sql.warehouse.dir", "file:///Users/beginspark/Temp/") \
+    .conf.set("spark.driver.host", "127.0.0.1") \
     .getOrCreate()
 
 sc = spark.sparkContext
@@ -437,4 +438,4 @@ def runSave(spark):
 # runOrderBy(spark)
 # runRollup(spark, sample_df2)
 # runWithColumn(spark)
-runSave(spark)
+# runSave(spark)

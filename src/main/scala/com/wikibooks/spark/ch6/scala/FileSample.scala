@@ -3,6 +3,7 @@ package com.wikibooks.spark.ch6.scala
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
+// 6.2.2절 예제 6-7
 object FileSample {
 
   def main(args: Array[String]): Unit = {

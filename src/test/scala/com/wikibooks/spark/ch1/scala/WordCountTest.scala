@@ -5,6 +5,7 @@ import org.junit.Test
 
 import scala.collection.mutable.ListBuffer
 
+// 1.4.1절
 class WordCountSpec {
   
   @Test

@@ -12,10 +12,11 @@ object RDDCreateSample {
 
     val sc = new SparkContext(conf)
 
+    // 2.1.3절 예제 2-6
     val rdd1 = sc.parallelize(List("a", "b", "c", "d", "e"))
 
-    // <project_home>은 예제 프로젝트의 경로
-    val rdd2 = sc.textFile("file://<project_home>/source/data/sample.txt")
+    // 2.1.3절 예제 2-8
+    val rdd2 = sc.textFile("<spark_home_dir>/README.md")
 
     println(rdd1.collect.mkString(", "))
     println(rdd2.collect.mkString(", "))

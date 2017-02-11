@@ -8,6 +8,7 @@ import scala.collection.mutable
 
 object StreamingOps {
 
+  // [예제 실행 방법] 아래에서 원하는 예제의 주석을 제거하고 실행!!
   def main(args: Array[String]): Unit = {
 
     val checkpointDir = "./checkPoints/StreamingOps/Scala"

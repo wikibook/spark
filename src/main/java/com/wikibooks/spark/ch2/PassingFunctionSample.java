@@ -1,12 +1,13 @@
 package com.wikibooks.spark.ch2;
 
-import java.util.Arrays;
-
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
 
+import java.util.Arrays;
+
+// 예제 2-3
 class Add implements Function<Integer, Integer> {
 	@Override
 	public Integer call(Integer v1) throws Exception {

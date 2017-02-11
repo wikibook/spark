@@ -5,6 +5,7 @@ import org.scalatest.FlatSpec
 
 import scala.collection.mutable.ListBuffer
 
+// 1.4.1절
 class WordCountSpec2 extends FlatSpec {
 
   it should "count the number of words in a sentence" in {

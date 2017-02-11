@@ -1,13 +1,70 @@
 package com.wikibooks.spark.ch2.scala
 
-import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable.ListBuffer
-import org.apache.spark.HashPartitioner
-import org.apache.spark.SparkConf
-import org.apache.spark.SparkContext
+import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
 import org.apache.spark.storage.StorageLevel
 
 object RDDOpSample {
+
+  def main(args: Array[String]) {
+    val sc = getSparkContext
+
+    // [예제 실행 방법] 아래에서 원하는 예제의 주석을 제거하고 실행!!
+
+    //    doCollect(sc: SparkContext)
+    //    doCount(sc: SparkContext)
+    //    doMap(sc: SparkContext)
+    //    ex_2_18_flatMap(sc: SparkContext)
+    //    doFlatMap(sc: SparkContext)
+    //    ex_2_22_flatMap(sc: SparkContext)
+    //    doMapPartitions(sc: SparkContext)
+    //    doMapPartitionsWithIndex(sc: SparkContext)
+    //    doMapValues(sc: SparkContext)
+    //    doFlatMapValues(sc: SparkContext)
+    //    doZip(sc: SparkContext)
+    //    doZipPartitions(sc: SparkContext)
+    //    doGroupBy(sc: SparkContext)
+    //    doGroupByKey(sc: SparkContext)
+    //    doCogroup(sc: SparkContext)
+    //    doDistinct(sc: SparkContext)
+    //    doCartesian(sc: SparkContext)
+    //    doSubtract(sc: SparkContext)
+    //    doUnion(sc: SparkContext)
+    //    doIntersection(sc: SparkContext)
+    //    doJoin(sc: SparkContext)
+    //    doLeftOuterJoin(sc: SparkContext)
+    //    doSubtractByKey(sc: SparkContext)
+    //    doReduceByKey(sc: SparkContext)
+    //    doFoldByKey(sc: SparkContext)
+    //    doCombineByKey(sc: SparkContext)
+    //    doAggregateByKey(sc: SparkContext)
+    //    doPipe(sc: SparkContext)
+    //    doCoalesceAndRepartition(sc: SparkContext)
+    //    doRepartitionAndSortWithinPartitions(sc: SparkContext)
+    //    doPartitionBy(sc: SparkContext)
+    //    doFilter(sc: SparkContext)
+    //    doSortByKey(sc: SparkContext)
+    //    doKeysAndValues(sc: SparkContext)
+    //    doSample(sc: SparkContext)
+    //    doFirst(sc: SparkContext)
+    //    doTake(sc: SparkContext)
+    //    doTakeSample(sc: SparkContext)
+    //    doCountByValue(sc: SparkContext)
+    //    doReduce(sc: SparkContext)
+    //    doFold(sc: SparkContext)
+    //    reduceVsFold(sc: SparkContext)
+    //    doAggregate(sc: SparkContext)
+    //    doSum(sc: SparkContext)
+    //    doForeach(sc: SparkContext)
+    //    doForeachPartition(sc: SparkContext)
+    //    doToDebugString(sc: SparkContext)
+    //    doCache(sc: SparkContext)
+    //    doGetPartitions(sc: SparkContext)
+    //    saveAndLoadTextFile(sc: SparkContext)
+    //    saveAndLoadObjectFile(sc: SparkContext)
+    //    saveAndLoadSequenceFile(sc: SparkContext)
+    //    testBroadcast(sc: SparkContext)
+    sc.stop
+  }
 
   def doCollect(sc: SparkContext) {
     val rdd = sc.parallelize(1 to 10)
@@ -74,7 +131,7 @@ object RDDOpSample {
     val rdd2 = rdd1.mapPartitionsWithIndex((idx, numbers) => {
       numbers.flatMap {
         case number if idx == 1 => Option(number + 1)
-        case _                  => None
+        case _ => None
       }
     })
     println(rdd2.collect.mkString(", "))
@@ -116,7 +173,7 @@ object RDDOpSample {
     val rdd = sc.parallelize(1 to 10)
     val result = rdd.groupBy {
       case i: Int if (i % 2 == 0) => "even"
-      case _                      => "odd"
+      case _ => "odd"
     }
     result.collect.foreach {
       v => println(s"${v._1}, [${v._2.mkString(",")}]")
@@ -251,7 +308,10 @@ object RDDOpSample {
     val data = for (i <- 1 to 10) yield (r.nextInt(100), "-")
     val rdd1 = sc.parallelize(data)
     val rdd2 = rdd1.repartitionAndSortWithinPartitions(new HashPartitioner(3))
-    rdd2.foreachPartition(it => { println("=========="); it.foreach(v => println(v)) })
+    rdd2.foreachPartition(it => {
+      println("==========");
+      it.foreach(v => println(v))
+    })
   }
 
   def doPartitionBy(sc: SparkContext) {
@@ -437,12 +497,6 @@ object RDDOpSample {
     val result = rdd.filter(broadcastUsers.value.contains(_))
 
     println(result.collect.mkString(","))
-  }
-
-  def main(args: Array[String]) {
-    val sc = getSparkContext
-    doFoldByKey(sc)
-    sc.stop
   }
 
   def getSparkContext(): SparkContext = {

@@ -1,37 +1,83 @@
 package com.wikibooks.spark.ch2;
 
-import java.util.*;
-import java.util.function.IntFunction;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 import org.apache.spark.HashPartitioner;
 import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaDoubleRDD;
-import org.apache.spark.api.java.JavaPairRDD;
-import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.*;
 import org.apache.spark.api.java.Optional;
-import org.apache.spark.api.java.function.FlatMapFunction;
-import org.apache.spark.api.java.function.FlatMapFunction2;
-import org.apache.spark.api.java.function.Function;
-import org.apache.spark.api.java.function.Function2;
-import org.apache.spark.api.java.function.PairFunction;
-import org.apache.spark.api.java.function.VoidFunction;
+import org.apache.spark.api.java.function.*;
 import org.apache.spark.broadcast.Broadcast;
 import org.apache.spark.storage.StorageLevel;
-
 import scala.Tuple2;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 public class RDDOpSample {
+
+  public static void main(String[] args) throws Exception {
+    JavaSparkContext sc = getSparkContext();
+
+    // [예제 실행 방법] 아래에서 원하는 예제의 주석을 제거하고 실행!!
+
+//    doCollect(sc);
+//    doCount(sc);
+//    doMap(sc);
+//    doFlatMap(sc);
+//    doMapPartitions(sc);
+//    doMapPartitionsWithIndex(sc);
+//    doMapValues(sc);
+//    doFlatMapValues(sc);
+//    doZip(sc);
+//    doZipPartitions(sc);
+//    doGroupBy(sc);
+//    doGroupByKey(sc);
+//    doCogroup(sc);
+//    doDistinct(sc);
+//    doCartesian(sc);
+//    doSubtract(sc);
+//    doUnion(sc);
+//    doIntersection(sc);
+//    doJoin(sc);
+//    doLeftOuterJoin(sc);
+//    doSubtractByKey(sc);
+//    doReduceByKey(sc);
+//    doFoldByKey(sc);
+//    doCombineByKey(sc);
+//    doAggregateByKey(sc);
+//    doPipe(sc);
+//    doCoalesceAndRepartition(sc);
+//    doRepartitionAndSortWithinPartitions(sc);
+//    doPartitionBy(sc);
+//    doFilter(sc);
+//    doSortByKey(sc);
+//    doKeysAndValues(sc);
+//    doSample(sc);
+//    doFirst(sc);
+//    doTake(sc);
+//    doTakeSample(sc);
+//    doCountByValue(sc);
+//    doReduce(sc);
+//    doFold(sc);
+//    doAggregate(sc);
+//    doSum(sc);
+//    doForeach(sc);
+//    doForeachPartition(sc);
+//    doDebugString(sc);
+//    doCache(sc);
+//    doGetPartitions(sc);
+//    saveAndLoadTextFile(sc);
+//    saveAndLoadObjectFile(sc);
+//    saveAndLoadSequenceFile(sc);
+//    testBroadcaset(sc);
+
+    sc.stop();
+  }
 
   public static void doCollect(JavaSparkContext sc) {
     JavaRDD<Integer> rdd = sc.parallelize(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
@@ -723,12 +769,6 @@ public class RDDOpSample {
     JavaRDD<String> result2 = rdd.filter((String v1) -> bu.value().contains(v1));
 
     System.out.println(result.collect());
-  }
-
-  public static void main(String[] args) throws Exception {
-    JavaSparkContext sc = getSparkContext();
-    saveAndLoadSequenceFile(sc);
-    sc.stop();
   }
 
   public static JavaSparkContext getSparkContext() {

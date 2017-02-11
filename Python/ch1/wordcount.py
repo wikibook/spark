@@ -2,6 +2,7 @@ from operator import add
 from pyspark import SparkContext, SparkConf
 import sys
 
+# 1.4.1절
 class WordCount:
     
     def getSparkContext(self, appName, master):

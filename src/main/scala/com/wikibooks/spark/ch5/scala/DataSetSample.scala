@@ -2,9 +2,46 @@ package com.wikibooks.spark.ch5.scala
 
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.{Dataset, Encoders, SaveMode, SparkSession}
+import org.apache.spark.sql.{Dataset, Encoders, SparkSession}
 
 object DatasetSample {
+
+  def main(args: Array[String]) = {
+
+    val spark = SparkSession
+      .builder()
+      .appName("DatasetSample")
+      .master("local[*]")
+      .config("spark.driver.host", "127.0.0.1")
+      .getOrCreate()
+
+    val sc = spark.sparkContext
+
+    import spark.implicits._
+
+    // 2. 컬렉션으로부터 생성
+    val row1 = Person("hayoon", 7, "student")
+    val row2 = Person("sunwoo", 13, "student")
+    val row3 = Person("hajoo", 5, "kindergartener")
+    val row4 = Person("jinwoo", 13, "student")
+    val data = List(row1, row2, row3, row4)
+    val ds = spark.createDataset(data)
+
+    // [예제 실행 방법] 아래에서 원하는 예제의 주석을 제거하고 실행!!
+
+    //createDataSet(spark, spark.sparkContext)
+    //runSelectEx(spark, ds)
+    //runAsEx(spark)
+    //runDistinctEx(spark)
+    //runDropDuplicatesEx(spark, ds)
+    //runFilterEx(spark, ds)
+    //runFlatMapEx(spark)
+    //runGroupByKey(spark, ds)
+    //runAgg(spark, ds)
+    //runMapValueAndReduceGroups(spark, ds)
+
+    spark.stop
+  }
 
   // 5.6.1절
   def createDataSet(spark: SparkSession, sc: SparkContext) {
@@ -122,39 +159,5 @@ object DatasetSample {
     val r1 = ds.groupByKey(_.job).mapValues(p => p.name + "(" + p.age + ") ")
     val r2 = r1.reduceGroups((s1, s2) => s1 + s2)
     r2.show(false)
-  }
-
-  def main(args: Array[String]) = {
-
-    val spark = SparkSession
-      .builder()
-      .appName("DatasetSample")
-      .master("local[*]")
-      .getOrCreate()
-
-    val sc = spark.sparkContext
-
-    import spark.implicits._
-
-    // 2. 컬렉션으로부터 생성
-    val row1 = Person("hayoon", 7, "student")
-    val row2 = Person("sunwoo", 13, "student")
-    val row3 = Person("hajoo", 5, "kindergartener")
-    val row4 = Person("jinwoo", 13, "student")
-    val data = List(row1, row2, row3, row4)
-    val ds = spark.createDataset(data)
-
-    //createDataSet(spark, spark.sparkContext)
-    //runSelectEx(spark, ds)
-    //runAsEx(spark)
-    //runDistinctEx(spark)
-    //runDropDuplicatesEx(spark, ds)
-    //runFilterEx(spark, ds)
-    //runFlatMapEx(spark)
-    //runGroupByKey(spark, ds)
-    //runAgg(spark, ds)
-    //runMapValueAndReduceGroups(spark, ds)
-
-    spark.stop
   }
 }

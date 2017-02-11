@@ -6,6 +6,7 @@ import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 
+// 6.2.1절 예제 6-5
 public class SocketSample {
 
   public static void main(String[] args) throws Exception {

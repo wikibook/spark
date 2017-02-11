@@ -1,9 +1,10 @@
 package com.wikibooks.spark.ch6.scala
 
 import kafka.serializer.StringDecoder
-import org.apache.spark.{ SparkConf, SparkContext }
-import org.apache.spark.streaming.{ Seconds, StreamingContext }
+import org.apache.spark.streaming.{Seconds, StreamingContext}
+import org.apache.spark.{SparkConf, SparkContext}
 
+// 6.2.4절 예제 6-10
 object KafkaSample {
 
   def main(args: Array[String]) {

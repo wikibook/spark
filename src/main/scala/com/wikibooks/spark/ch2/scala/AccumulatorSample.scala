@@ -5,6 +5,7 @@ import org.apache.spark.util.AccumulatorV2
 
 object AccumulatorSample {
 
+  // ex 2-140
   def runBuitInAcc(sc: SparkContext) {
     val acc1 = sc.longAccumulator("invalidFormat")
     val acc2 = sc.collectionAccumulator[String]("invalidFormat2")
@@ -19,6 +20,7 @@ object AccumulatorSample {
     println("잘못된 데이터:" + acc2.value)
   }
 
+  // ex 2-143
   def runCustomAcc(sc: SparkContext) {
     val acc = new RecordAccumulator
     sc.register(acc, "invalidFormat")

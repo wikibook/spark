@@ -15,6 +15,41 @@ import java.util.List;
 
 public class DatasetSample {
 
+  public static void main(String[] args) {
+
+    SparkSession spark = SparkSession
+            .builder()
+            .appName("DatasetSample")
+            .master("local[*]")
+            .config("spark.driver.host", "127.0.0.1")
+            .getOrCreate();
+
+    JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
+
+    Person row1 = new Person("hayoon", 7, "student");
+    Person row2 = new Person("sunwoo", 13, "student");
+    Person row3 = new Person("hajoo", 5, "kindergartener");
+    Person row4 = new Person("jinwoo", 13, "student");
+
+    List<Person> data = Arrays.asList(row1, row2, row3, row4);
+    Dataset<Person> ds = spark.createDataset(data, Encoders.bean(Person.class));
+
+    // # [예제 실행 방법] 아래에서 원하는 예제의 주석을 제거하고 실행!!
+
+    //createDataSet(spark, new JavaSparkContext(spark.sparkContext()));
+    //runSelectEx(spark, ds);
+    //runAsEx(spark);
+    //runDistinctEx(spark);
+    //runDropDuplicatesEx(spark, ds);
+    //runFilterEx(spark, ds);
+    //runFlatMap(spark);
+    //runGroupByKeyEx(spark, ds);
+    //runAgg(spark, ds);
+    //runMapValueAndReduceGroups(spark, ds);
+
+    spark.stop();
+  }
+
   // 5.6.1절
   public static void createDataSet(SparkSession spark, JavaSparkContext sc) {
 
@@ -208,37 +243,5 @@ public class DatasetSample {
       }
     }).show(false);
 
-  }
-
-  public static void main(String[] args) {
-
-    SparkSession spark = SparkSession
-            .builder()
-            .appName("DatasetSample")
-            .master("local[*]")
-            .getOrCreate();
-
-    JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
-
-    Person row1 = new Person("hayoon", 7, "student");
-    Person row2 = new Person("sunwoo", 13, "student");
-    Person row3 = new Person("hajoo", 5, "kindergartener");
-    Person row4 = new Person("jinwoo", 13, "student");
-
-    List<Person> data = Arrays.asList(row1, row2, row3, row4);
-    Dataset<Person> ds = spark.createDataset(data, Encoders.bean(Person.class));
-
-    //createDataSet(spark, new JavaSparkContext(spark.sparkContext()));
-    //runSelectEx(spark, ds);
-    //runAsEx(spark);
-    //runDistinctEx(spark);
-    //runDropDuplicatesEx(spark, ds);
-    //runFilterEx(spark, ds);
-    //runFlatMap(spark);
-    //runGroupByKeyEx(spark, ds);
-    //runAgg(spark, ds);
-    //runMapValueAndReduceGroups(spark, ds);
-
-    spark.stop();
   }
 }

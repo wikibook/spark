@@ -24,6 +24,8 @@ ds3 = ssc.queueStream(q3, True)
 ds4 = ssc.queueStream(q4, True)
 ds5 = ssc.queueStream(q5, True)
 
+# [예제 실행 방법] 아래에서 원하는 예제의 주석을 제거하고 실행!!
+
 # 6.3.1절(파이썬의 경우 print가 아닌 pprint임)
 # ds1.pprint()
 

@@ -22,6 +22,70 @@ import static org.apache.spark.sql.functions.*;
 
 public class DataFrameSample {
 
+  public static void main(String[] args) {
+
+    SparkSession spark = SparkSession
+            .builder()
+            .appName("DataFrameSample")
+            .master("local[*]")
+            .config("spark.driver.host", "127.0.0.1")
+            .getOrCreate();
+
+    JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
+
+    // sample dataframe(dataset<Row>) 1
+    Person row1 = new Person("hayoon", 7, "student");
+    Person row2 = new Person("sunwoo", 13, "student");
+    Person row3 = new Person("hajoo", 5, "kindergartener");
+    Person row4 = new Person("jinwoo", 13, "student");
+
+    List<Person> data = Arrays.asList(row1, row2, row3, row4);
+    Dataset<Row> sampleDf = spark.createDataFrame(data, Person.class);
+
+    Product d1 = new Product("store2", "note", 20, 2000);
+    Product d2 = new Product("store2", "bag", 10, 5000);
+    Product d3 = new Product("store1", "note", 15, 1000);
+    Product d4 = new Product("store1", "pen", 20, 5000);
+    Dataset<Row> sampleDF2 = spark.createDataFrame(Arrays.asList(d1, d2, d3, d4), Product.class);
+
+    Dataset<Row> ldf = spark.createDataFrame(Arrays.asList(new Word("w1", 1), new Word("w2", 1)), Word.class);
+    Dataset<Row> rdf = spark.createDataFrame(Arrays.asList(new Word("w1", 2), new Word("w3", 1)), Word.class);
+
+    createDataFrame(spark, new JavaSparkContext(spark.sparkContext()));
+
+    // [예제 실행 방법] 아래에서 원하는 예제의 주석을 제거하고 실행!!
+
+    // runBasicOpsEx(spark, sc, sampleDf);
+    // runColumnEx(spark, sc, sampleDf);
+    // runAliasEx(spark, sc, sampleDf);
+    // runIsinEx(spark, sc);
+    // runWhenEx(spark, sc);
+    // runMaxMin(spark, sampleDf);
+    // runAggregateFunctions(spark, sampleDf, sampleDF2);
+    // runCollectionFunctions(spark);
+    // runDateFunctions(spark);
+    // runMathFunctions(spark);
+    // runOtherFunctions(spark, sampleDf);
+    // runUDF(spark, sampleDf);
+    // runAgg(spark, sampleDF2);
+    // runDfAlias(spark, sampleDF2);
+    // runGroupBy(spark, sampleDF2);
+    // runCube(spark, sampleDF2);
+    // runDistinct(spark);
+    // runDrop(spark, sampleDF2);
+    // runIntersect(spark);
+    // runExcept(spark);
+    // runJoin(spark, ldf, rdf);
+    // runNa(spark, ldf, rdf);
+    // runOrderBy(spark);
+    // runRollup(spark, sampleDF2);
+    // runStat(spark);
+    // runWithColumn(spark);
+    // runSave(spark);
+
+    spark.stop();
+  }
+
   public static void createDataFrame(SparkSession spark, JavaSparkContext sc) {
 
     String sparkHomeDir = "/Users/beginspark/Apps/spark";
@@ -469,68 +533,5 @@ public class DataFrameSample {
     // bucketBy의 경우 테이블로 저장해야 햠
     df.write().format("json").bucketBy(20, "age").mode(SaveMode.Overwrite).saveAsTable("ohMyBuckedTable");
     spark.sql("select * from ohMyBuckedTable").show();
-  }
-
-  public static void main(String[] args) {
-
-    SparkSession spark = SparkSession
-            .builder()
-            .appName("DataFrameSample")
-            .master("local[*]")
-            .getOrCreate();
-
-    JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
-
-    // sample dataframe(dataset<Row>) 1
-    Person row1 = new Person("hayoon", 7, "student");
-    Person row2 = new Person("sunwoo", 13, "student");
-    Person row3 = new Person("hajoo", 5, "kindergartener");
-    Person row4 = new Person("jinwoo", 13, "student");
-
-    List<Person> data = Arrays.asList(row1, row2, row3, row4);
-    Dataset<Row> sampleDf = spark.createDataFrame(data, Person.class);
-
-    Product d1 = new Product("store2", "note", 20, 2000);
-    Product d2 = new Product("store2", "bag", 10, 5000);
-    Product d3 = new Product("store1", "note", 15, 1000);
-    Product d4 = new Product("store1", "pen", 20, 5000);
-    Dataset<Row> sampleDF2 = spark.createDataFrame(Arrays.asList(d1, d2, d3, d4), Product.class);
-
-    Dataset<Row> ldf = spark.createDataFrame(Arrays.asList(new Word("w1", 1), new Word("w2", 1)), Word.class);
-    Dataset<Row> rdf = spark.createDataFrame(Arrays.asList(new Word("w1", 2), new Word("w3", 1)), Word.class);
-
-    createDataFrame(spark, new JavaSparkContext(spark.sparkContext()));
-
-    // [예제 실행 방법] 아래에서 원하는 예제의 주석을 제거하고 실행!!
-
-    // runBasicOpsEx(spark, sc, sampleDf);
-    // runColumnEx(spark, sc, sampleDf);
-    // runAliasEx(spark, sc, sampleDf);
-    // runIsinEx(spark, sc);
-    // runWhenEx(spark, sc);
-    // runMaxMin(spark, sampleDf);
-    // runAggregateFunctions(spark, sampleDf, sampleDF2);
-    // runCollectionFunctions(spark);
-    // runDateFunctions(spark);
-    // runMathFunctions(spark);
-    // runOtherFunctions(spark, sampleDf);
-    // runUDF(spark, sampleDf);
-    // runAgg(spark, sampleDF2);
-    // runDfAlias(spark, sampleDF2);
-    // runGroupBy(spark, sampleDF2);
-    // runCube(spark, sampleDF2);
-    // runDistinct(spark);
-    // runDrop(spark, sampleDF2);
-    // runIntersect(spark);
-    // runExcept(spark);
-    // runJoin(spark, ldf, rdf);
-    // runNa(spark, ldf, rdf);
-    // runOrderBy(spark);
-    // runRollup(spark, sampleDF2);
-    // runStat(spark);
-    // runWithColumn(spark);
-    // runSave(spark);
-
-    spark.stop();
   }
 }
