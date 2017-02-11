@@ -32,9 +32,9 @@
   df.show ---> personDF.show
 
 * 429 페이지 예제 8-11(pipeline_sample.py)  
-   training.show(False) --> training.show(truncate=False) 
-   assembled_training.show(False) --> assembled_training.show(truncate=False)
-   LogisticRegression(... weightCol="gender") --> LogisticRegression(... labelCol="gender") 
+   training.show(False) --> training.show(truncate=False)  
+   assembled_training.show(False) --> assembled_training.show(truncate=False)  
+   LogisticRegression(... weightCol="gender") --> LogisticRegression(... labelCol="gender")   
 
 
 
