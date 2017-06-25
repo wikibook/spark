@@ -19,3 +19,7 @@ project/plugins/project/
 
 # Python
 *__pycache__
+
+# IDE
+.idea/*
+*.iml

@@ -159,7 +159,7 @@ class RDDOpSample():
         result1 = rdd1.leftOuterJoin(rdd2)
         result2 = rdd1.rightOuterJoin(rdd2)
         print("Left: %s" % result1.collect())
-        print("Right: %s" % result1.collect())
+        print("Right: %s" % result2.collect())
 
     def doSubtractByKey(self, sc):
         rdd1 = sc.parallelize(["a", "b"]).map(lambda v: (v, 1))
